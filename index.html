@@ -44,7 +44,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             justify-content: center;
         }
@@ -61,10 +61,10 @@
         }
 
         .view-section { display: none; padding-bottom: 90px; }
-        .view-section.active { display: block; animation: slideIn 0.3s ease-out; }
+        .view-section.active { display: block; animation: slideIn 0.2s ease-out; }
 
         @keyframes slideIn { 
-            from { opacity: 0; transform: translateY(10px); } 
+            from { opacity: 0; transform: translateY(8px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
@@ -76,6 +76,12 @@
         }
         .btn-primary:active { transform: scale(0.97); }
 
+        .btn-outline {
+            width: 100%; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border);
+            background: var(--surface-color); color: var(--text-main); font-weight: 600; font-size: 14px;
+            cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+
         .input-group { margin-bottom: 16px; }
         .input-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
         .input-group input, .input-group select {
@@ -83,14 +89,6 @@
             background: var(--surface-color); color: var(--text-main); outline: none; transition: 0.2s;
         }
         .input-group input:focus { border-color: var(--primary); outline: 2px solid var(--primary-soft); }
-
-        /* --- Login View --- */
-        #login-view { height: 100vh; display: none; align-items: center; justify-content: center; padding: 24px; }
-        #login-view.active { display: flex; flex-direction: column; }
-        .login-card {
-            background: var(--surface-color); padding: 40px 24px;
-            border-radius: var(--radius-lg); width: 100%; box-shadow: var(--shadow-md); text-align: center;
-        }
 
         /* --- Header --- */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; }
@@ -118,12 +116,9 @@
         .box-summary p { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
         .box-summary h3 { font-size: 17px; }
 
-        /* --- Distribution List --- */
+        /* --- Containers --- */
         .list-container { background: var(--surface-color); margin: 0 24px 20px; padding: 20px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
-        .list-header { font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; justify-content: space-between; }
-        .item-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-        .item-meta { display: flex; align-items: center; gap: 12px; }
-        .item-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .list-header { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
 
         /* --- Bottom Nav --- */
         .nav-bar {
@@ -131,7 +126,7 @@
             background: var(--surface-color); border-top: 1px solid var(--border);
             display: flex; justify-content: space-around; padding: 10px 0 25px; z-index: 100;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; text-decoration: none; cursor: pointer; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 11px; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 24px; }
         
@@ -143,7 +138,7 @@
         }
 
         /* --- Modals --- */
-        .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; display: none; align-items: flex-end; }
+        .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; backdrop-filter: blur(2px); }
         .overlay.active { display: flex; }
         .modal { 
             background: var(--surface-color); width: 100%; padding: 24px; 
@@ -165,14 +160,14 @@
     <!-- LOADER -->
     <div id="loader" class="loader-box">
         <div class="spinner"></div>
-        <p style="margin-top: 15px; font-size: 14px; color: var(--text-muted)" id="loader-msg">Menyiapkan data...</p>
+        <p style="margin-top: 15px; font-size: 14px; color: var(--text-muted)" id="loader-msg">Memuat...</p>
     </div>
 
     <!-- NOTIFICATION BOX -->
     <div id="notif-overlay" class="overlay" style="align-items: center; justify-content: center; z-index: 1000;">
         <div class="modal" style="width: 85%; max-width: 320px; border-radius: 20px; text-align: center;">
-            <div id="notif-icon" style="font-size: 40px; color: var(--success); margin-bottom: 15px;"><i class="ph-fill ph-check-circle"></i></div>
-            <h3 id="notif-title" style="margin-bottom: 10px;">Info</h3>
+            <div id="notif-icon" style="font-size: 44px; color: var(--success); margin-bottom: 12px;"><i class="ph-fill ph-check-circle"></i></div>
+            <h3 id="notif-title" style="margin-bottom: 8px;">Info</h3>
             <p id="notif-msg" style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;"></p>
             <button class="btn-primary" onclick="closeNotif()">Tutup</button>
         </div>
@@ -180,21 +175,14 @@
 
     <!-- VIEW: LOGIN -->
     <div id="view-login" class="view-section active">
-        <div id="login-container" style="height: 100vh; display: flex; align-items: center; padding: 24px;">
-            <div class="login-card">
+        <div style="height: 100vh; display: flex; align-items: center; padding: 24px;">
+            <div class="login-card" style="background:var(--surface-color); padding: 40px 24px; border-radius: var(--radius-lg); width: 100%; box-shadow: var(--shadow-md); text-align: center;">
                 <i class="ph-fill ph-wallet" style="font-size: 60px; color: var(--primary); margin-bottom: 20px;"></i>
                 <h2>KeuanganKu</h2>
                 <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 30px;">Kelola finansial dengan cerdas.</p>
-                
-                <div class="input-group" style="text-align: left;">
-                    <label>Username</label>
-                    <input type="text" id="login-user" placeholder="Nama pengguna">
-                </div>
-                <div class="input-group" style="text-align: left;">
-                    <label>Password</label>
-                    <input type="password" id="login-pass" placeholder="Kata sandi">
-                </div>
-                <button class="btn-primary" onclick="doLogin()">Masuk Sekarang</button>
+                <div class="input-group" style="text-align: left;"><label>Username</label><input type="text" id="login-user" value="admin"></div>
+                <div class="input-group" style="text-align: left;"><label>Password</label><input type="password" id="login-pass" value="admin123"></div>
+                <button class="btn-primary" onclick="doLogin()">Masuk Dashboard</button>
             </div>
         </div>
     </div>
@@ -205,119 +193,92 @@
             <div class="user-meta">
                 <div class="avatar"><i class="ph ph-user"></i></div>
                 <div class="greeting">
-                    <p id="greet-txt">Selamat Pagi,</p>
+                    <p id="greet-txt">Selamat Datang,</p>
                     <h3 id="user-display">User</h3>
                 </div>
             </div>
-            <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text-main); font-size: 24px; cursor:pointer;">
-                <i class="ph ph-moon" id="theme-icon"></i>
-            </button>
+            <button onclick="toggleTheme()" style="background:none; border:none; color:var(--text-main); font-size: 24px;"><i class="ph ph-moon" id="theme-icon"></i></button>
         </header>
 
         <div class="card-main">
             <p class="label">Kekayaan Bersih</p>
             <h1 class="balance" id="val-net">Rp 0</h1>
             <div class="card-stats">
-                <div class="stat-box">
-                    <p>Total Masuk</p>
-                    <h4 style="color: #ADFFD9;"><i class="ph ph-arrow-down-left"></i> <span id="val-total-in">0</span></h4>
-                </div>
-                <div class="stat-box" style="text-align: right;">
-                    <p>Total Keluar</p>
-                    <h4 style="justify-content: flex-end; color: #FFD1D1;"><span id="val-total-out">0</span> <i class="ph ph-arrow-up-right"></i></h4>
-                </div>
+                <div class="stat-box"><p>Pemasukan</p><h4 style="color: #ADFFD9;"><i class="ph ph-arrow-down-left"></i> <span id="val-total-in">0</span></h4></div>
+                <div class="stat-box" style="text-align: right;"><p>Pengeluaran</p><h4 style="justify-content: flex-end; color: #FFD1D1;"><span id="val-total-out">0</span> <i class="ph ph-arrow-up-right"></i></h4></div>
             </div>
         </div>
 
         <div class="grid-summary">
-            <div class="box-summary">
-                <p>Hari Ini</p>
-                <h3 id="val-day-out" style="color: var(--danger);">Rp 0</h3>
-            </div>
-            <div class="box-summary highlight">
-                <p>Sisa Budget</p>
-                <h3 id="val-budget">Rp 0</h3>
-            </div>
+            <div class="box-summary"><p>Hari Ini</p><h3 id="val-day-out" style="color: var(--danger);">Rp 0</h3></div>
+            <div class="box-summary highlight"><p>Estimasi Sisa</p><h3 id="val-budget">Rp 0</h3></div>
         </div>
 
         <div class="list-container">
-            <div class="list-header">Tren 7 Hari</div>
+            <div class="list-header">Tren 7 Hari Terakhir</div>
             <div style="height: 180px;"><canvas id="chartTrend"></canvas></div>
         </div>
 
         <div class="list-container">
-            <div class="list-header">Kategori Terbanyak</div>
-            <div id="dist-list">
-                <p style="text-align: center; color: var(--text-muted); font-size: 13px;">Belum ada data</p>
-            </div>
+            <div class="list-header">Top Kategori (Bulan Ini)</div>
+            <div id="dist-list"></div>
         </div>
     </div>
 
-    <!-- VIEW: TRANSAKSI -->
+    <!-- VIEW: HISTORY -->
     <div id="view-history" class="view-section">
         <header class="header"><h3>Riwayat Transaksi</h3></header>
         <div id="tx-history-list" style="padding: 0 24px;"></div>
     </div>
 
-    <!-- VIEW: LAPORAN -->
+    <!-- VIEW: REPORT -->
     <div id="view-report" class="view-section">
-        <header class="header"><h3>Laporan Bulanan</h3></header>
-        <div style="padding: 0 24px 20px;">
+        <header class="header"><h3>Laporan Keuangan</h3></header>
+        <div style="padding: 0 24px 16px;">
             <input type="month" id="report-picker" onchange="fetchReport()" style="width:100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-color); color: var(--text-main);">
         </div>
         
         <div class="grid-summary">
-            <div class="box-summary" style="border-left: 4px solid var(--success);">
-                <p>Pemasukan</p>
-                <h3 id="rep-in" style="color: var(--success);">Rp 0</h3>
-            </div>
-            <div class="box-summary" style="border-left: 4px solid var(--danger);">
-                <p>Pengeluaran</p>
-                <h3 id="rep-out" style="color: var(--danger);">Rp 0</h3>
-            </div>
+            <div class="box-summary" style="border-left: 4px solid var(--success);"><p>Masuk</p><h3 id="rep-in" style="color: var(--success);">Rp 0</h3></div>
+            <div class="box-summary" style="border-left: 4px solid var(--danger);"><p>Keluar</p><h3 id="rep-out" style="color: var(--danger);">Rp 0</h3></div>
         </div>
 
         <div class="list-container">
-            <div class="list-header">Proporsi Pengeluaran</div>
-            <div style="height: 220px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div class="list-header">Analisis Pengeluaran</div>
+            <div style="height: 280px; position: relative; margin-bottom: 20px;">
                 <canvas id="chartReport"></canvas>
-                <div id="no-report-data" style="position: absolute; display: none; color: var(--text-muted); font-size: 14px;">Tidak ada data pengeluaran</div>
+                <div id="no-report-data" style="position: absolute; inset: 0; display: none; align-items: center; justify-content: center; color: var(--text-muted); font-size: 14px;">Tidak ada pengeluaran di bulan ini</div>
             </div>
+            <!-- BUTTON DOWNLOAD -->
+            <button class="btn-outline" onclick="downloadReportCSV()" id="btn-download" style="margin-top: 10px;">
+                <i class="ph ph-download-simple"></i> Unduh Data (.csv)
+            </button>
         </div>
     </div>
 
     <!-- NAV BAR -->
     <nav class="nav-bar" id="app-nav" style="display: none;">
-        <div class="nav-item active" onclick="navTo('view-dashboard', this)"><i class="ph ph-house"></i><span>Home</span></div>
+        <div class="nav-item active" onclick="navTo('view-dashboard', this)"><i class="ph ph-house"></i><span>Beranda</span></div>
         <div class="nav-item" onclick="navTo('view-history', this)"><i class="ph ph-receipt"></i><span>Riwayat</span></div>
         <div class="fab" onclick="toggleModal(true)"><i class="ph ph-plus"></i></div>
-        <div class="nav-item" onclick="navTo('view-report', this)"><i class="ph ph-chart-pie-slice"></i><span>Laporan</span></div>
+        <div class="nav-item" onclick="navTo('view-report', this)"><i class="ph ph-chart-bar"></i><span>Laporan</span></div>
         <div class="nav-item" onclick="doLogout()"><i class="ph ph-sign-out"></i><span>Keluar</span></div>
     </nav>
 
-    <!-- MODAL: ADD TX -->
+    <!-- MODAL: FORM TX -->
     <div id="modal-tx" class="overlay">
         <div class="modal">
             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <h3>Tambah Transaksi</h3>
+                <h3 id="modal-title">Tambah Transaksi</h3>
                 <i class="ph ph-x" onclick="toggleModal(false)" style="font-size: 24px; cursor:pointer;"></i>
             </div>
             <form id="tx-form" onsubmit="saveTx(event)">
                 <div class="input-group"><label>Tanggal</label><input type="date" id="f-date" required></div>
-                <div class="input-group">
-                    <label>Tipe</label>
-                    <select id="f-type" onchange="syncCats()" required>
-                        <option value="Keluar">Pengeluaran (-)</option>
-                        <option value="Masuk">Pemasukan (+)</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>Nominal (Rp)</label><input type="number" id="f-amount" placeholder="Contoh: 50000" required></div>
-                <div class="input-group">
-                    <label>Kategori</label>
-                    <select id="f-cat" required></select>
-                </div>
-                <div class="input-group"><label>Catatan</label><input type="text" id="f-note" placeholder="Opsional"></div>
-                <button type="submit" class="btn-primary">Simpan Data</button>
+                <div class="input-group"><label>Tipe</label><select id="f-type" onchange="syncCats()"><option value="Keluar">Pengeluaran (-)</option><option value="Masuk">Pemasukan (+)</option></select></div>
+                <div class="input-group"><label>Nominal (Rp)</label><input type="number" id="f-amount" placeholder="50.000" required></div>
+                <div class="input-group"><label>Kategori</label><select id="f-cat" required></select></div>
+                <div class="input-group"><label>Catatan</label><input type="text" id="f-note" placeholder="Beli apa?"></div>
+                <button type="submit" class="btn-primary" id="btn-save">Simpan Transaksi</button>
             </form>
         </div>
     </div>
@@ -325,17 +286,16 @@
 </div>
 
 <script>
-    // --- CONFIGURATION ---
-    const API_URL = "https://script.google.com/macros/s/AKfycbwc-Is5zjTuDv19dWLCuiDshOuX2qKFvFPTSLozvk1sNuFUts2GL0UuQwf4L-qZi24IHA/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbw-dApMp-IqgiQSPt68D46Jr7-NDD_9zgltj-PhE2OWiNJ-PKIWEJw9qI5MrFOnkyRq1Q/exec";
     
     let state = {
         user: localStorage.getItem('user_id') || null,
         theme: localStorage.getItem('app_theme') || 'light',
         cats: { masuk: [], keluar: [] },
-        charts: { trend: null, report: null }
+        charts: { trend: null, report: null },
+        reportData: null // Menyimpan data laporan untuk fitur download
     };
 
-    // --- UI HELPERS ---
     const fmtRp = (v) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(v);
     const fmtShort = (v) => v >= 1000000 ? (v/1000000).toFixed(1) + 'jt' : (v >= 1000 ? (v/1000).toFixed(0) + 'rb' : v);
 
@@ -348,21 +308,12 @@
     function notify(title, msg, type = 'success') {
         document.getElementById('notif-title').innerText = title;
         document.getElementById('notif-msg').innerText = msg;
-        const iconDiv = document.getElementById('notif-icon');
-        
-        if (type === 'success') {
-            iconDiv.innerHTML = '<i class="ph-fill ph-check-circle"></i>';
-            iconDiv.style.color = 'var(--success)';
-        } else {
-            iconDiv.innerHTML = '<i class="ph-fill ph-warning-circle"></i>';
-            iconDiv.style.color = 'var(--danger)';
-        }
-        
+        document.getElementById('notif-icon').innerHTML = `<i class="ph-fill ph-${type==='success'?'check':'warning'}-circle"></i>`;
+        document.getElementById('notif-icon').style.color = type === 'success' ? 'var(--success)' : 'var(--danger)';
         document.getElementById('notif-overlay').classList.add('active');
     }
     function closeNotif() { document.getElementById('notif-overlay').classList.remove('active'); }
 
-    // --- API CORE ---
     async function api(action, params = {}, method = 'GET') {
         try {
             if (method === 'GET') {
@@ -370,7 +321,7 @@
                 const res = await fetch(`${API_URL}?${q}`);
                 return await res.json();
             } else {
-                const res = await fetch(API_URL, {
+                await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain' },
@@ -379,22 +330,19 @@
                 return { success: true };
             }
         } catch (e) {
-            console.error(e);
+            console.warn("API Offline, menggunakan Mock Data");
             return mockApi(action, params);
         }
     }
 
-    // --- LOGIC ---
     window.onload = () => {
         applyTheme();
         if (state.user) {
             navTo('view-dashboard');
-            initApp();
+            initApp(true);
         }
-        
-        const now = new Date();
-        document.getElementById('f-date').valueAsDate = now;
-        document.getElementById('report-picker').value = now.toISOString().substring(0, 7);
+        document.getElementById('f-date').valueAsDate = new Date();
+        document.getElementById('report-picker').value = new Date().toISOString().substring(0, 7);
     };
 
     function applyTheme() {
@@ -406,21 +354,17 @@
         state.theme = state.theme === 'light' ? 'dark' : 'light';
         localStorage.setItem('app_theme', state.theme);
         applyTheme();
+        if(state.charts.trend) initApp(false);
     }
 
     async function doLogin() {
         const u = document.getElementById('login-user').value;
-        const p = document.getElementById('login-pass').value;
-        if(!u || !p) return notify("Opps", "Username & Password wajib diisi", "error");
-
+        if(!u) return notify("Opps", "Username wajib diisi", "error");
         showLoading("Autentikasi...");
-        const res = await api('login', { username: u, password: p }, 'POST');
-        hideLoading();
-
         localStorage.setItem('user_id', u);
         state.user = u;
         navTo('view-dashboard');
-        initApp();
+        await initApp(true);
     }
 
     function doLogout() {
@@ -428,40 +372,24 @@
         location.reload();
     }
 
-    async function initApp() {
+    async function initApp(withLoading = false) {
         document.getElementById('user-display').innerText = state.user;
-        updateGreet();
-        
-        const [catRes, dataRes] = await Promise.all([
-            api('getCategories'),
-            api('getData', { user: state.user })
-        ]);
-        
-        if(catRes.success) {
-            state.cats = catRes.data;
-            syncCats();
-        }
+        if(withLoading) showLoading("Menyinkronkan...");
+        const [catRes, dataRes] = await Promise.all([api('getCategories'), api('getData', { user: state.user })]);
+        if(withLoading) hideLoading();
+        if(catRes.success) { state.cats = catRes.data; syncCats(); }
         if(dataRes.success) renderDashboard(dataRes.data);
-    }
-
-    function updateGreet() {
-        const h = new Date().getHours();
-        document.getElementById('greet-txt').innerText = h < 11 ? "Selamat Pagi," : (h < 15 ? "Selamat Siang," : (h < 19 ? "Selamat Sore," : "Selamat Malam,"));
     }
 
     function navTo(viewId, el) {
         document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        
         if (el) {
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             el.classList.add('active');
         }
-
         document.getElementById('app-nav').style.display = viewId === 'view-login' ? 'none' : 'flex';
-        
         if (viewId === 'view-report') fetchReport();
-        if (viewId === 'view-dashboard' && state.user) initApp();
     }
 
     function renderDashboard(data) {
@@ -469,36 +397,19 @@
         document.getElementById('val-total-in').innerText = fmtShort(data.totalMasuk);
         document.getElementById('val-total-out').innerText = fmtShort(data.totalKeluar);
         document.getElementById('val-day-out').innerText = fmtRp(data.keluarHariIni);
-        document.getElementById('val-budget').innerText = fmtRp(data.saldoBersih * 0.3);
-
-        renderTrendChart(data.chartData);
+        document.getElementById('val-budget').innerText = fmtRp(data.saldoBersih * 0.4);
+        renderTrendChart(data.chartData.keluar, data.chartData.labels);
         renderDistList(data.distribusiBulanIni);
         renderHistory(data.riwayatTransaksi);
     }
 
-    function renderTrendChart(chartData) {
+    function renderTrendChart(dataPoints, labels) {
         const ctx = document.getElementById('chartTrend').getContext('2d');
         if (state.charts.trend) state.charts.trend.destroy();
-        
         state.charts.trend = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: chartData.labels,
-                datasets: [{
-                    label: 'Keluar',
-                    data: chartData.keluar,
-                    borderColor: '#EF4444',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { display: false }, x: { grid: { display: false }, ticks: { font: { size: 10 } } } }
-            }
+            data: { labels, datasets: [{ data: dataPoints, borderColor: '#EF4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4, pointRadius: 2 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { font: { size: 10 }, color: state.theme === 'dark' ? '#94A3B8' : '#64748B' } } } }
         });
     }
 
@@ -506,46 +417,19 @@
         const container = document.getElementById('dist-list');
         container.innerHTML = '';
         const entries = Object.entries(dist).sort((a,b) => b[1] - a[1]);
-        
-        if(entries.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 13px;">Belum ada pengeluaran</p>`;
-            return;
-        }
-
+        if(entries.length === 0) { container.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px;">Belum ada pengeluaran</p>`; return; }
         entries.slice(0, 4).forEach(([name, val]) => {
-            container.innerHTML += `
-                <div class="item-row">
-                    <div class="item-meta">
-                        <div class="item-icon" style="background: var(--primary-soft); color: var(--primary)"><i class="ph ph-tag"></i></div>
-                        <span style="font-size: 14px; font-weight: 500;">${name}</span>
-                    </div>
-                    <span style="font-weight: 700;">${fmtShort(val)}</span>
-                </div>
-            `;
+            container.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;"><div style="display:flex; align-items:center; gap:10px;"><div style="width:36px; height:36px; border-radius:10px; background:var(--primary-soft); color:var(--primary); display:flex; align-items:center; justify-content:center;"><i class="ph ph-tag"></i></div><span style="font-size:14px; font-weight:500;">${name}</span></div><span style="font-weight:700;">${fmtShort(val)}</span></div>`;
         });
     }
 
     function renderHistory(txs) {
         const container = document.getElementById('tx-history-list');
         container.innerHTML = '';
+        if(txs.length === 0) { container.innerHTML = `<p style="text-align: center; color: var(--text-muted); font-size: 14px; padding-top: 40px;">Riwayat kosong</p>`; return; }
         txs.forEach(tx => {
             const isIn = tx.tipe === 'Masuk';
-            container.innerHTML += `
-                <div class="box-summary" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="item-icon" style="background: ${isIn ? 'var(--success-soft)' : 'var(--danger-soft)'}; color: ${isIn ? 'var(--success)' : 'var(--danger)'}">
-                            <i class="ph ${isIn ? 'ph-arrow-circle-down' : 'ph-shopping-cart'}"></i>
-                        </div>
-                        <div>
-                            <div style="font-weight: 600; font-size: 14px;">${tx.kategori}</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">${tx.tanggal} • ${tx.catatan || '-'}</div>
-                        </div>
-                    </div>
-                    <div style="font-weight: 700; color: ${isIn ? 'var(--success)' : 'var(--text-main)'}">
-                        ${isIn ? '+' : '-'}${fmtShort(tx.jumlah)}
-                    </div>
-                </div>
-            `;
+            container.innerHTML += `<div class="box-summary" style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;"><div style="display: flex; align-items: center; gap: 12px;"><div style="width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; background: ${isIn ? 'var(--success-soft)' : 'var(--danger-soft)'}; color: ${isIn ? 'var(--success)' : 'var(--danger)'}"><i class="ph ${isIn ? 'ph-arrow-circle-down' : 'ph-shopping-cart'}"></i></div><div><div style="font-weight: 600; font-size: 14px;">${tx.kategori}</div><div style="font-size: 11px; color: var(--text-muted);">${tx.tanggal} ${tx.catatan ? '• '+tx.catatan : ''}</div></div></div><div style="font-weight: 700; color: ${isIn ? 'var(--success)' : 'var(--text-main)'}">${isIn ? '+' : '-'}${fmtShort(tx.jumlah)}</div></div>`;
         });
     }
 
@@ -554,11 +438,14 @@
         showLoading("Menganalisa...");
         const res = await api('getReportData', { month: m });
         hideLoading();
-
         if(res.success) {
+            state.reportData = res.data; // Simpan data ke state
             document.getElementById('rep-in').innerText = fmtRp(res.data.totalMasuk);
             document.getElementById('rep-out').innerText = fmtRp(res.data.totalKeluar);
             renderReportChart(res.data.distribusi);
+            
+            // Tampilkan/sembunyikan tombol download berdasarkan ketersediaan data
+            document.getElementById('btn-download').style.display = (res.data.totalMasuk === 0 && res.data.totalKeluar === 0) ? 'none' : 'flex';
         }
     }
 
@@ -571,100 +458,141 @@
         const values = Object.values(dist);
 
         if(labels.length === 0) {
-            empty.style.display = 'block';
+            empty.style.display = 'flex';
             return;
         }
         empty.style.display = 'none';
 
         state.charts.report = new Chart(ctx, {
-            type: 'doughnut',
+            type: 'bar',
             data: {
-                labels,
+                labels: labels,
                 datasets: [{
                     data: values,
-                    backgroundColor: ['#2563EB', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'],
-                    borderWidth: 0
+                    backgroundColor: ['#2563EB', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'],
+                    borderRadius: 8,
+                    barThickness: 24,
                 }]
             },
             options: {
+                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '75%',
-                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+                animation: { duration: 500 },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => ` Total: ${fmtRp(context.raw)}`
+                        }
+                    }
+                },
+                scales: {
+                    x: { display: false, grid: { display: false } },
+                    y: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: {
+                            color: state.theme === 'dark' ? '#F1F5F9' : '#0F172A',
+                            font: { size: 12, weight: '500' }
+                        }
+                    }
+                }
             }
         });
     }
 
-    function toggleModal(show) { 
-        document.getElementById('modal-tx').classList.toggle('active', show); 
+    /**
+     * FITUR BARU: Download Laporan dalam format CSV
+     */
+    function downloadReportCSV() {
+        if (!state.reportData || !state.reportData.transaksi || state.reportData.transaksi.length === 0) {
+            return notify("Opps", "Tidak ada rincian transaksi untuk diunduh.", "error");
+        }
+
+        const monthName = document.getElementById('report-picker').value;
+        const filename = `Laporan_Keuangan_${monthName}.csv`;
+        
+        // Header CSV
+        let csvContent = "Tanggal,Tipe,Kategori,Jumlah,Catatan\n";
+
+        // Baris Data
+        state.reportData.transaksi.forEach(tx => {
+            const row = [
+                tx.tanggal,
+                tx.tipe,
+                tx.kategori,
+                tx.jumlah,
+                `"${tx.catatan || ''}"` // Menggunakan tanda kutip untuk mengantisipasi koma dalam catatan
+            ].join(",");
+            csvContent += row + "\n";
+        });
+
+        // Proses download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        notify("Berhasil", "Laporan berhasil diunduh.");
     }
+
+    function toggleModal(show) { document.getElementById('modal-tx').classList.toggle('active', show); if(!show) document.getElementById('tx-form').reset(); }
 
     function syncCats() {
         const type = document.getElementById('f-type').value;
         const sel = document.getElementById('f-cat');
         sel.innerHTML = '';
         const list = type === 'Masuk' ? state.cats.masuk : state.cats.keluar;
-        list.forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c; opt.innerText = c;
-            sel.appendChild(opt);
-        });
+        if(list.length === 0) { sel.innerHTML = '<option disabled>Memuat...</option>'; return; }
+        list.forEach(c => { const opt = document.createElement('option'); opt.value = c; opt.innerText = c; sel.appendChild(opt); });
     }
 
     async function saveTx(e) {
         e.preventDefault();
-        const data = {
-            tanggal: document.getElementById('f-date').value,
-            tipe: document.getElementById('f-type').value,
-            jumlah: document.getElementById('f-amount').value,
-            kategori: document.getElementById('f-cat').value,
-            catatan: document.getElementById('f-note').value,
-            user: state.user
-        };
-
+        const btn = document.getElementById('btn-save');
+        const data = { tanggal: document.getElementById('f-date').value, tipe: document.getElementById('f-type').value, jumlah: document.getElementById('f-amount').value, kategori: document.getElementById('f-cat').value, catatan: document.getElementById('f-note').value, user: state.user };
+        btn.disabled = true; btn.innerText = "Mengirim...";
         showLoading("Menyimpan...");
         const res = await api('addTransaction', { data }, 'POST');
-        
-        // Sembunyikan loading dan tutup modal form
-        hideLoading();
-        toggleModal(false);
-        
         if (res.success) {
-            // Tampilkan notifikasi keberhasilan
-            notify("Berhasil", "Transaksi Anda telah berhasil disimpan ke database.");
-            
-            // Reset form
-            document.getElementById('tx-form').reset();
-            document.getElementById('f-date').valueAsDate = new Date();
-            
-            // Refresh data di dashboard
-            initApp();
+            toggleModal(false); btn.disabled = false; btn.innerText = "Simpan Data";
+            await initApp(false); 
+            hideLoading();
+            notify("Berhasil", "Transaksi disimpan ke database.");
         } else {
-            notify("Gagal", "Terjadi kesalahan saat menyimpan data.", "error");
+            hideLoading(); btn.disabled = false; btn.innerText = "Simpan Data";
+            notify("Gagal", "Koneksi bermasalah.", "error");
         }
     }
 
-    // --- MOCK API FOR DEMO ---
     function mockApi(action, params) {
         return new Promise(res => {
             setTimeout(() => {
                 if(action === 'login') res({ success: true });
-                if(action === 'getCategories') res({ success: true, data: { masuk: ['Gaji', 'Bonus', 'Transfer'], keluar: ['Makan', 'Transport', 'Belanja', 'Tagihan'] } });
-                if(action === 'getData') res({
-                    success: true,
-                    data: {
-                        saldoBersih: 2500000, totalMasuk: 5000000, totalKeluar: 2500000, keluarHariIni: 50000,
-                        distribusiBulanIni: { 'Makan': 1200000, 'Transport': 300000, 'Belanja': 1000000 },
-                        chartData: { labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], keluar: [40, 60, 30, 90, 20, 50, 45] },
-                        riwayatTransaksi: [
-                            { tanggal: '2023-10-25', tipe: 'Keluar', jumlah: 50000, kategori: 'Makan', catatan: 'Nasi Padang' },
-                            { tanggal: '2023-10-24', tipe: 'Masuk', jumlah: 1000000, kategori: 'Bonus', catatan: 'Proyek A' }
-                        ]
-                    }
-                });
-                if(action === 'getReportData') res({ success: true, data: { totalMasuk: 3000000, totalKeluar: 1500000, distribusi: { 'Makan': 800000, 'Belanja': 700000 } } });
+                if(action === 'getCategories') res({ success: true, data: { masuk: ['Gaji', 'Bonus', 'Transfer'], keluar: ['Makan', 'Transport', 'Belanja', 'Tagihan', 'Hiburan', 'Kesehatan'] } });
+                if(action === 'getData') res({ success: true, data: { saldoBersih: 4250000, totalMasuk: 6500000, totalKeluar: 2250000, keluarHariIni: 85000, distribusiBulanIni: { 'Makan': 1100000, 'Belanja': 650000, 'Transport': 300000, 'Hiburan': 200000 }, chartData: { labels: ['01/04', '02/04', '03/04', '04/04', '05/04', '06/04', '07/04'], keluar: [120, 80, 200, 45, 150, 90, 75] }, riwayatTransaksi: [{ tanggal: '2026-04-04', tipe: 'Keluar', jumlah: 85000, kategori: 'Makan', catatan: 'Nasi goreng' }, { tanggal: '2026-04-03', tipe: 'Masuk', jumlah: 6000000, kategori: 'Gaji' }] } });
+                if(action === 'getReportData') {
+                    res({ 
+                        success: true, 
+                        data: { 
+                            totalMasuk: 6000000, 
+                            totalKeluar: 2500000, 
+                            distribusi: { 'Makan': 1100000, 'Belanja': 800000, 'Transport': 400000, 'Hiburan': 200000 },
+                            transaksi: [
+                                { tanggal: '2026-04-04', tipe: 'Keluar', jumlah: 50000, kategori: 'Makan', catatan: 'Makan Siang' },
+                                { tanggal: '2026-04-02', tipe: 'Masuk', jumlah: 6000000, kategori: 'Gaji', catatan: 'Gaji April' }
+                            ]
+                        } 
+                    });
+                }
                 if(action === 'addTransaction') res({ success: true });
-            }, 800);
+            }, 400);
         });
     }
 </script>
